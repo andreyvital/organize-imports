@@ -10,5 +10,10 @@
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
+  "keywords": [
+    "organize",
+    "imports",
+    "sort"
+  ],
   "main": "./lib/organize-imports"
 }
