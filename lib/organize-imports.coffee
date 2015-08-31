@@ -9,8 +9,12 @@ module.exports =
     startRow = bufferRange.start.row
     endRow = bufferRange.end.row
 
+    # console.log startRow
+    # console.log endRow
+
     imports = editor.getTextInBufferRange [[startRow - 1, 0], [endRow + 1, 0]]
     imports = imports.split('\n').filter (stm) -> stm.length
+    imports = imports.filter (stm) -> /^\s*(?:\bimport\b(?:.+))/.test stm
 
     # imports = editor.getLastSelection().getText().split('\n').filter (stm) -> stm.length
 
