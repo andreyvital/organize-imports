@@ -2,11 +2,11 @@
   "name": "organize-imports",
   "main": "./lib/organize-imports",
   "version": "0.0.0",
-  "description": "Atom plugin to automatically organize JS imports!",
+  "description": "Atom plugin to automatically organize JS imports",
   "activationCommands": {
     "atom-workspace": "organize-imports:organize"
   },
-  "repository": "https://github.com/atom/organize-imports",
+  "repository": "https://github.com/CentaurWarchief/organize-imports",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
