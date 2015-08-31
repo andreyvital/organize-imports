@@ -37,26 +37,30 @@ compare = (a, b) ->
   scoreA = scoreOf a...
   scoreB = scoreOf b...
 
-  return scoreA - scoreB if scoreA isnt scoreB
+  return 1 if scoreA > scoreB
+  return -1 if scoreA < scoreB
+  return 0
 
-  if a < b
-    return -1
-
-  if a == b
-    return 0
-
-  if a > b
-    return 1
+  # return scoreA - scoreB if scoreA isnt scoreB
+  #
+  # if a < b
+  #   return -1
+  #
+  # if a == b
+  #   return 0
+  #
+  # if a > b
+  #   return 1
 
 scoreOf = (what, from) ->
-  return 3 if ! from or ! what
+  return -2 if (what.slice 0, 4) == 'type'
 
-  return 0 if ((what.slice 0, 4) == 'type')
+  return -1 if from[0] isnt '.'
 
   if from[0] is '.'
     match = (from.match /\.\./g)
 
     return match.length if match
-    return 2 if ! match
+    return 0 if ! match
 
   return 1
