@@ -6,7 +6,13 @@ module.exports =
     editor = atom.workspace.getActivePaneItem()
     bufferRange = editor.getSelectedBufferRange()
 
-    imports = editor.getLastSelection().getText().split('\n').filter (stm) -> stm.length
+    startRow = bufferRange.start.row
+    endRow = bufferRange.end.row
+
+    imports = editor.getTextInBufferRange [[startRow - 1, 0], [endRow + 1, 0]]
+    imports = imports.split('\n').filter (stm) -> stm.length
+
+    # imports = editor.getLastSelection().getText().split('\n').filter (stm) -> stm.length
 
     return if imports.length is 0
 
