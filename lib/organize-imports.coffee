@@ -41,17 +41,6 @@ compare = (a, b) ->
   return -1 if scoreA < scoreB
   return 0
 
-  # return scoreA - scoreB if scoreA isnt scoreB
-  #
-  # if a < b
-  #   return -1
-  #
-  # if a == b
-  #   return 0
-  #
-  # if a > b
-  #   return 1
-
 scoreOf = (what, from) ->
   return -2 if (what.slice 0, 4) == 'type'
 
