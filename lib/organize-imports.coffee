@@ -11,7 +11,7 @@ module.exports =
 
     entireFile = bufferRange.start.isEqual(bufferRange.end)
 
-    startsWithImportRegex = /^\s*(?:\bimport\b(?:.+))/
+    startsWithImportRegex = /^(?:\bimport\b(?:.+))/
 
     if entireFile
       lines = editor.getText().split '\n'
