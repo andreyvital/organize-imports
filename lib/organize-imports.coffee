@@ -6,9 +6,6 @@ module.exports =
     editor = atom.workspace.getActivePaneItem()
     bufferRange = editor.getSelectedBufferRange()
 
-    startRow = bufferRange.start.row
-    endRow = bufferRange.end.row
-
     entireFile = bufferRange.start.isEqual(bufferRange.end)
 
     startsWithImportRegex = /^(?:\bimport\b(?:.+))/
@@ -31,10 +28,13 @@ module.exports =
       endRow = end
 
     if not entireFile
-      start = bufferRange.start.row
-      end = bufferRange.end.row + 1
+      startRow = bufferRange.start.row
+      endRow = bufferRange.end.row
 
-    imports = editor.getTextInBufferRange [[startRow - 1, 0], [endRow + 1, 0]]
+      start = startRow
+      end = endRow + 1
+
+    imports = editor.getTextInBufferRange [[startRow, 0], [endRow + 1, 0]]
     imports = imports.split('\n').filter (stm) -> stm.length
     imports = imports.filter (stm) -> startsWithImportRegex.test stm
 
