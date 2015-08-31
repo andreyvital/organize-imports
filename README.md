@@ -1,4 +1,4 @@
-### `organize-imports`
+## `organize-imports`
 Atom plugin to automatically organize JS imports.
 
 1. Select all **import** statements which you want to organize
