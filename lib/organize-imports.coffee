@@ -9,21 +9,40 @@ module.exports =
     startRow = bufferRange.start.row
     endRow = bufferRange.end.row
 
-    # console.log startRow
-    # console.log endRow
+    entireFile = bufferRange.start.isEqual(bufferRange.end)
+
+    startsWithImportRegex = /^\s*(?:\bimport\b(?:.+))/
+
+    if entireFile
+      lines = editor.getText().split '\n'
+
+      start = -1
+      end = lines.length
+
+      for line, i in lines
+        if start is -1 and line.match startsWithImportRegex
+          start = i
+
+        if start isnt -1 and line and not line.match startsWithImportRegex
+          end = i - 1
+          break
+
+      startRow = start
+      endRow = end
+
+    if not entireFile
+      start = bufferRange.start.row
+      end = bufferRange.end.row + 1
 
     imports = editor.getTextInBufferRange [[startRow - 1, 0], [endRow + 1, 0]]
     imports = imports.split('\n').filter (stm) -> stm.length
-    imports = imports.filter (stm) -> /^\s*(?:\bimport\b(?:.+))/.test stm
+    imports = imports.filter (stm) -> startsWithImportRegex.test stm
 
     # imports = editor.getLastSelection().getText().split('\n').filter (stm) -> stm.length
 
     return if imports.length is 0
 
     regex = /^(?:import (.+) from\s*(?:'|")(.+)(?:'|"))/gm
-
-    start = bufferRange.start.row
-    end = bufferRange.end.row + 1
 
     organize = []
 
