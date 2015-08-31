@@ -26,7 +26,7 @@ module.exports =
 
     organize.sort compare
 
-    organize = organize.map ([what, from]) -> "import #{what} from '#{from}'"
+    organize = organize.map ([what, from]) -> "import #{what} from '#{from}';"
 
     editor.setTextInBufferRange(
       [[start, 0], [end, 0]],
