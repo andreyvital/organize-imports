@@ -34,8 +34,8 @@ module.exports =
     )
 
 compare = (a, b) ->
-  scoreA = scoreOf a[1]
-  scoreB = scoreOf b[1]
+  scoreA = scoreOf a...
+  scoreB = scoreOf b...
 
   return scoreA - scoreB if scoreA isnt scoreB
 
@@ -48,8 +48,10 @@ compare = (a, b) ->
   if a > b
     return 1
 
-scoreOf = (from) ->
-  return 3 if ! from
+scoreOf = (what, from) ->
+  return 3 if ! from or ! what
+
+  return 0 if ((what.slice 0, 4) == 'type')
 
   if from[0] is '.'
     match = (from.match /\.\./g)
