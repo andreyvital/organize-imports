@@ -52,6 +52,9 @@ scoreOf = (path) ->
   return 3 if ! path
 
   if path[0] is '.'
-    return (path.match /\.\./g).length
+    match = (path.match /\.\./g)
+
+    return match.length if match
+    return 2 if ! match
 
   return 1
