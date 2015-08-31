@@ -6,9 +6,9 @@ module.exports =
     editor = atom.workspace.getActivePaneItem()
     bufferRange = editor.getSelectedBufferRange()
 
-    imports = editor.getLastSelection().getText().split('\n')
+    imports = editor.getLastSelection().getText().split('\n').filter (stm) -> stm.length
 
-    return if ! imports
+    return if imports.length is 0
 
     regex = /^(?:import (.+) from\s*(?:'|")(.+)(?:'|"))/gm
 
