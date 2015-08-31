@@ -48,11 +48,11 @@ compare = (a, b) ->
   if a > b
     return 1
 
-scoreOf = (path) ->
-  return 3 if ! path
+scoreOf = (from) ->
+  return 3 if ! from
 
-  if path[0] is '.'
-    match = (path.match /\.\./g)
+  if from[0] is '.'
+    match = (from.match /\.\./g)
 
     return match.length if match
     return 2 if ! match
