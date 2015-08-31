@@ -1,0 +1,21 @@
+'context-menu':
+  'atom-text-editor': [
+    {
+      'label': 'Organize imports'
+      'command': 'organize-imports:organize'
+    }
+  ]
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'organize-imports'
+      'submenu': [
+        {
+          'label': 'Organize'
+          'command': 'organize-imports:organize'
+        }
+      ]
+    ]
+  }
+]
