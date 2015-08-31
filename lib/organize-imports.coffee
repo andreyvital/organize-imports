@@ -50,5 +50,8 @@ compare = (a, b) ->
 
 scoreOf = (path) ->
   return 3 if ! path
-  return 2 if path[0] is '.'
+
+  if path[0] is '.'
+    return (path.match /\.\./g).length
+
   return 1
