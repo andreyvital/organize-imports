@@ -1,4 +1,4 @@
-compare = require './compare.coffee'
+compare = require './compare'
 
 module.exports =
   activate: (state) ->

@@ -1,4 +1,4 @@
-scoreOf = require './scoreOf.coffee'
+scoreOf = require './scoreOf'
 
 compare = (a, b) ->
   scoreA = scoreOf a...
