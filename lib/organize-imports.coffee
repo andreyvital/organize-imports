@@ -4,6 +4,15 @@ module.exports =
   activate: (state) ->
     atom.commands.add 'atom-workspace', 'organize-imports:organize', => @organize()
 
+    # for now, based on eslint (it should be a package option or something like)
+    try {
+      semi = JSON.parse(fs.readFileSync(atom.project.getPaths()[0] + '/.eslintrc')).rules.semi
+
+      @shouldUseSemicolon = semi[1] is 'always'
+    } catch (e) {
+      @shouldUseSemicolon = true
+    }
+
   organize: ->
     editor = atom.workspace.getActivePaneItem()
     bufferRange = editor.getSelectedBufferRange()
@@ -57,7 +66,9 @@ module.exports =
 
     organize.sort compare
 
-    organize = organize.map ([what, from]) -> "import #{what} from '#{from}';"
+    semicolon = @shouldUseSemicolon
+
+    organize = organize.map ([what, from]) -> "import #{what} from '#{from}'" + (';' if semicolon)
 
     editor.setTextInBufferRange(
       [[start, 0], [end, 0]],
