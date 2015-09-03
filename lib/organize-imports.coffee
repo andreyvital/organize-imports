@@ -1,3 +1,5 @@
+compare = require './compare.coffee'
+
 module.exports =
   activate: (state) ->
     atom.commands.add 'atom-workspace', 'organize-imports:organize', => @organize()
@@ -61,19 +63,3 @@ module.exports =
       [[start, 0], [end, 0]],
       (organize.join '\n') + '\n'
     )
-
-compare = (a, b) ->
-  scoreA = scoreOf a...
-  scoreB = scoreOf b...
-
-  return scoreB - scoreA if scoreA isnt scoreB
-  return a[1].localeCompare b[1]
-
-scoreOf = (what, from) ->
-  # flow type `import type {...}`
-  return 2 if (what.slice 0, 4) == 'type'
-
-  # module
-  return 1 if from[0] isnt '.'
-
-  return 0
