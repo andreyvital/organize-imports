@@ -1,16 +1,18 @@
 compare = require './compare'
+# fs = require 'fs'
 
 module.exports =
   activate: (state) ->
     atom.commands.add 'atom-workspace', 'organize-imports:organize', => @organize()
 
     # for now, based on eslint (it should be a package option or something like)
-    try
-      semi = JSON.parse(fs.readFileSync(atom.project.getPaths()[0] + '/.eslintrc')).rules.semi
-      @shouldUseSemicolon = semi[1] is 'always'
-    catch e
-      @shouldUseSemicolon = true
-
+    # try
+    #   semi = JSON.parse(fs.readFileSync(atom.project.getPaths()[0] + '/.eslintrc')).rules.semi
+    #   @shouldUseSemicolon = semi[1] is 'always'
+    # catch e
+    #   @shouldUseSemicolon = true
+    @shouldUseSemicolon = false
+    
   organize: ->
     editor = atom.workspace.getActivePaneItem()
     bufferRange = editor.getSelectedBufferRange()
