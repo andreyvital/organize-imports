@@ -1,77 +1,46 @@
-compare = require './compare'
-# fs = require 'fs'
+recast = require 'recast'
+babel = require 'babel-core'
+scoreOf = require './scoreOf'
 
 module.exports =
   activate: (state) ->
     atom.commands.add 'atom-workspace', 'organize-imports:organize', => @organize()
 
-    # for now, based on eslint (it should be a package option or something like)
-    # try
-    #   semi = JSON.parse(fs.readFileSync(atom.project.getPaths()[0] + '/.eslintrc')).rules.semi
-    #   @shouldUseSemicolon = semi[1] is 'always'
-    # catch e
-    #   @shouldUseSemicolon = true
-    @shouldUseSemicolon = false
-    
+  organizeImports: (code) ->
+    ast = recast.parse code, {
+      esprima: babel
+    }
+
+    return if not ast.program
+
+    imports = ast.program.body.filter (node) -> node.type is 'ImportDeclaration'
+
+    imports.sort (a, b) ->
+      sA = scoreOf a
+      sB = scoreOf b
+
+      return sB - sA if sA isnt sB
+      return a.source.value.localeCompare b.source.value
+
+    ast.program.body = ast.program.body.map (node) ->
+      return imports.shift() if node.type is 'ImportDeclaration'
+      node
+
+    return recast.print(ast).code
+
   organize: ->
     editor = atom.workspace.getActivePaneItem()
-    bufferRange = editor.getSelectedBufferRange()
+    # bufferRange = editor.getSelectedBufferRange()
 
-    entireFile = bufferRange.start.isEqual(bufferRange.end)
+    # if bufferRange.start.isEqual(bufferRange.end)
+    contents = editor.getText()
+    editor.setText @organizeImports contents
+    return
 
-    startsWithImportRegex = /^(?:\bimport\b(?:.+))/
-
-    if entireFile
-      lines = editor.getText().split '\n'
-
-      start = -1
-      end = lines.length
-
-      for line, i in lines
-        if start is -1 and line.match startsWithImportRegex
-          start = i
-
-        if start isnt -1 and line and not line.match startsWithImportRegex
-          end = i - 1
-          break
-
-      startRow = start
-      endRow = end
-
-    if not entireFile
-      startRow = bufferRange.start.row
-      endRow = bufferRange.end.row
-
-      start = startRow
-      end = endRow + 1
-
-    imports = editor.getTextInBufferRange [[startRow, 0], [endRow + 1, 0]]
-    imports = imports.split('\n').filter (stm) -> stm.length
-    imports = imports.filter (stm) -> startsWithImportRegex.test stm
-
-    # imports = editor.getLastSelection().getText().split('\n').filter (stm) -> stm.length
-
-    return if imports.length is 0
-
-    regex = /^(?:import (.+) from\s*(?:'|")(.+)(?:'|"))/gm
-
-    organize = []
-
-    for importStm in imports
-      continue if not importStm.match regex
-
-      [_, what, from] = regex.exec importStm
-
-      organize.push [what, from]
-
-    organize.sort compare
-
-    semicolon = @shouldUseSemicolon
-
-    organize = organize.map ([what, from]) ->
-      "import #{what} from '#{from}'" + (if semicolon then ';' else '')
-
-    editor.setTextInBufferRange(
-      [[start, 0], [end, 0]],
-      (organize.join '\n') + '\n'
-    )
+    # contents = editor.getTextInBufferRange [
+    #   [bufferRange.start.row, 0],
+    #   [bufferRange.end.row + 1, 0]
+    # ]
+    #
+    # editor.setTextInBufferRange [[start, 0], [end, 0]], @organizeImports contents
+    # return

@@ -10,6 +10,10 @@
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
+  "dependencies": {
+    "babel-core": "^5.8.21",
+    "recast": "^0.11.2"
+  },
   "keywords": [
     "organize",
     "imports",
