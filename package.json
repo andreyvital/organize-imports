@@ -1,6 +1,6 @@
 {
   "name": "organize-imports",
-  "version": "0.7.0",
+  "version": "1.0.0",
   "description": "Atom plugin to automatically organize JS imports",
   "activationCommands": {
     "atom-workspace": "organize-imports:organize"
